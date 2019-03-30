@@ -6,8 +6,8 @@ namespace Rosalind
     {
         static void Main(string[] args)
         {
-            SplicedMotif run = new SplicedMotif();
-            run.Execute();
+            OpenReadingFrame test = new OpenReadingFrame("./input/orf_input.fa");
+            test.Execute();
         }
     }
 }

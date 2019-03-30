@@ -20,6 +20,7 @@ def read_fasta_sequence(fasta_file):
                 fasta_id = line[1:]
             else:
                 sequence_buffer += line
+        fasta_sequences.append(sequence_buffer)
     fasta_dict = dict(zip(fasta_sequences, fasta_identifiers))
 
 
@@ -36,7 +37,7 @@ def create_adjacency_list(k):
         print tup[0] + ' ' + tup[1]
 
 def main():
-    read_fasta_sequence('overlap_input.txt')
+    read_fasta_sequence('./input/overlap_input.txt')
     create_adjacency_list(3)
 
 if __name__ == '__main__':
