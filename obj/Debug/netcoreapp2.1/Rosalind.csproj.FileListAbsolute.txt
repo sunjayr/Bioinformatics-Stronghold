@@ -1,0 +1,11 @@
+/Users/Sunjay/Desktop/Rosalind/bin/Debug/netcoreapp2.1/Rosalind.deps.json
+/Users/Sunjay/Desktop/Rosalind/bin/Debug/netcoreapp2.1/Rosalind.runtimeconfig.json
+/Users/Sunjay/Desktop/Rosalind/bin/Debug/netcoreapp2.1/Rosalind.runtimeconfig.dev.json
+/Users/Sunjay/Desktop/Rosalind/bin/Debug/netcoreapp2.1/Rosalind.dll
+/Users/Sunjay/Desktop/Rosalind/bin/Debug/netcoreapp2.1/Rosalind.pdb
+/Users/Sunjay/Desktop/Rosalind/obj/Debug/netcoreapp2.1/Rosalind.csprojAssemblyReference.cache
+/Users/Sunjay/Desktop/Rosalind/obj/Debug/netcoreapp2.1/Rosalind.csproj.CoreCompileInputs.cache
+/Users/Sunjay/Desktop/Rosalind/obj/Debug/netcoreapp2.1/Rosalind.AssemblyInfoInputs.cache
+/Users/Sunjay/Desktop/Rosalind/obj/Debug/netcoreapp2.1/Rosalind.AssemblyInfo.cs
+/Users/Sunjay/Desktop/Rosalind/obj/Debug/netcoreapp2.1/Rosalind.dll
+/Users/Sunjay/Desktop/Rosalind/obj/Debug/netcoreapp2.1/Rosalind.pdb
