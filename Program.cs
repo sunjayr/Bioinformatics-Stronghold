@@ -6,8 +6,8 @@ namespace Rosalind
     {
         static void Main(string[] args)
         {
-            OpenReadingFrame test = new OpenReadingFrame("./input/orf_input.fa");
-            test.Execute();
+            GenomeAssembly genome = new GenomeAssembly("./input/genome_assembly_input.fa");
+            genome.PrintReads();
         }
     }
 }
