@@ -48,6 +48,7 @@ namespace Rosalind
         public static List<string> GenerateKmers(int k, string read)
         {
             //TODO: Implement function to create Kmers
+            //and check comment
             return new List<string>();
         }
 
