@@ -3,6 +3,7 @@ using System.Linq;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Rosalind 
 {
@@ -42,6 +43,24 @@ namespace Rosalind
                 fastaDict[sequenceId] = sequenceBuffer;
             }
             return fastaDict;
+        }
+
+        public static List<string> GenerateKmers(int k, string read)
+        {
+            //TODO: Implement function to create Kmers
+            return new List<string>();
+        }
+
+        public static T[] GetArrayRow<T>(this T[,] array, int row)
+        {
+            return Enumerable.Range(0,array.GetLength(0))
+                            .Select(x => array[row,x]).ToArray();
+        }
+
+        public static T[] GetArrayCol<T>(this T[,] array, int col)
+        {
+            return Enumerable.Range(0,array.GetLength(1))
+                            .Select(x => array[x,col]).ToArray();
         }
     }
 }
