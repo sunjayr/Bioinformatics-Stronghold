@@ -77,9 +77,9 @@ namespace Rosalind
                         string prefixRead = this.reads[prefixIndex];
                         string suffixRead = this.reads[suffixIndex];
                         int overlapScore = this.CalculateOverlap(prefixRead, suffixRead);
-                        int storedValue = overlapScore > readLengthCutoff ? overlapScore : 0; 
+                        //overlapScore = overlapScore > readLengthCutoff ? overlapScore : 0; 
                         //Console.WriteLine($"Max overlap between {prefixRead} : {suffixRead} -> {overlapScore}");
-                        this.overlapMatrix[prefixIndex,suffixIndex] = storedValue;
+                        this.overlapMatrix[prefixIndex,suffixIndex] = overlapScore;
                     }
 
                 }
@@ -89,43 +89,66 @@ namespace Rosalind
         
         private string FindSourceRead()
         {
+            int minColSum = System.Int32.MaxValue;
+            int minColIndex = -1;
             for (int col = 0; col < this.overlapMatrix.GetLength(1); col++)
             {
                 var column = this.overlapMatrix.GetArrayCol(col);
-                if (column.Sum() == 0)
+                int colSum = column.Sum();
+                if (colSum < minColSum)
                 {
-                    return this.reads[col];
+                    minColIndex = col;
+                    minColSum = colSum;
                 }
             }
-            return null;
+            return this.reads[minColIndex];
         }
 
         private string FindSinkRead()
         {
+            int minRowSum = System.Int32.MaxValue;
+            int minRowIndex = -1;
             for (int row = 0; row < this.overlapMatrix.GetLength(0); row++)
             {
                 var rowArr = this.overlapMatrix.GetArrayRow(row);
-                if (rowArr.Sum() == 0)
+                int rowSum = rowArr.Sum();
+                if (rowSum < minRowSum)
                 {
-                    return this.reads[row];
+                    minRowIndex = row;
+                    minRowSum = rowSum;
                 }
             }
-            return null;
+
+            return this.reads[minRowIndex];
+        }
+        
+        private int AddOverlap(int prefixIndex, ref string genome)
+        {
+            var pRow = this.overlapMatrix.GetArrayRow(prefixIndex);
+            int overlappingSymbols = pRow.Max();
+            int overlapReadIndex = Array.IndexOf(pRow, pRow.Max());
+            string matchingSuffix = this.reads[overlapReadIndex];
+            
+            genome += matchingSuffix.Substring(overlappingSymbols);
+            return overlapReadIndex;
+
         }
         public void GenerateSuperString()
         {
             string genome = "";
             string source = this.FindSourceRead();
             string sink = this.FindSinkRead();
-            
+            //Console.WriteLine($"Source read {source}");
+            //Console.WriteLine($"Sink read {sink}");
+            genome += source;
             int sinkIndex = reads.IndexOf(sink);
             int currentIndex = reads.IndexOf(source);
             while (currentIndex != sinkIndex)
             {
-                //TODO finish this block
+                int nextIndex = this.AddOverlap(currentIndex, ref genome);
+                currentIndex = nextIndex;    
             }
-            // Console.WriteLine($"Source read {source}");
-            // Console.WriteLine($"Sink read {sink}");
+            Console.WriteLine(genome);
         }
 
         public void Test()
@@ -142,7 +165,8 @@ namespace Rosalind
 
         public void Run()
         {
-
+            this.BuildOverlapMatrix();
+            this.GenerateSuperString();
         }
     }    
 }

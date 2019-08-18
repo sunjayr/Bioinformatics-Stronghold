@@ -54,13 +54,13 @@ namespace Rosalind
 
         public static T[] GetArrayRow<T>(this T[,] array, int row)
         {
-            return Enumerable.Range(0,array.GetLength(0))
+            return Enumerable.Range(0,array.GetLength(1))
                             .Select(x => array[row,x]).ToArray();
         }
 
         public static T[] GetArrayCol<T>(this T[,] array, int col)
         {
-            return Enumerable.Range(0,array.GetLength(1))
+            return Enumerable.Range(0,array.GetLength(0))
                             .Select(x => array[x,col]).ToArray();
         }
     }

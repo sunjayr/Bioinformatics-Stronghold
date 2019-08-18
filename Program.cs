@@ -7,9 +7,7 @@ namespace Rosalind
         static void Main(string[] args)
         {
             GenomeAssembly genome = new GenomeAssembly("./input/genome_assembly_input.fa");
-            genome.BuildOverlapMatrix();
-            genome.Test();
-            genome.GenerateSuperString();
+            genome.Run();
         }
     }
 }
