@@ -18,13 +18,15 @@ namespace Rosalind
         private Dictionary<string, string> readMap;
         private List<string> reads;
         private int[,] overlapMatrix;
+        private readonly int readLengthCutoff;
 
 
         public GenomeAssembly(string fastaInput) 
         {
-            readMap = Utils.ReadFastaFile(fastaInput);
-            reads = readMap.Values.ToList();
-            overlapMatrix = new int [this.reads.Count,this.reads.Count];
+            this.readMap = Utils.ReadFastaFile(fastaInput);
+            this.reads = readMap.Values.ToList();
+            this.overlapMatrix = new int [this.reads.Count,this.reads.Count];
+            this.readLengthCutoff = reads[0].Length / 2;
         }
 
         public void PrintReads() 
@@ -75,23 +77,67 @@ namespace Rosalind
                         string prefixRead = this.reads[prefixIndex];
                         string suffixRead = this.reads[suffixIndex];
                         int overlapScore = this.CalculateOverlap(prefixRead, suffixRead);
-                        Console.WriteLine($"Max overlap between {prefixRead} : {suffixRead} -> {overlapScore}");
-                        this.overlapMatrix[prefixIndex,suffixIndex] = overlapScore;
+                        int storedValue = overlapScore > readLengthCutoff ? overlapScore : 0; 
+                        //Console.WriteLine($"Max overlap between {prefixRead} : {suffixRead} -> {overlapScore}");
+                        this.overlapMatrix[prefixIndex,suffixIndex] = storedValue;
                     }
 
                 }
             }
         }
 
+        
+        private string FindSourceRead()
+        {
+            for (int col = 0; col < this.overlapMatrix.GetLength(1); col++)
+            {
+                var column = this.overlapMatrix.GetArrayCol(col);
+                if (column.Sum() == 0)
+                {
+                    return this.reads[col];
+                }
+            }
+            return null;
+        }
+
+        private string FindSinkRead()
+        {
+            for (int row = 0; row < this.overlapMatrix.GetLength(0); row++)
+            {
+                var rowArr = this.overlapMatrix.GetArrayRow(row);
+                if (rowArr.Sum() == 0)
+                {
+                    return this.reads[row];
+                }
+            }
+            return null;
+        }
         public void GenerateSuperString()
         {
-
+            string genome = "";
+            string source = this.FindSourceRead();
+            string sink = this.FindSinkRead();
+            
+            int sinkIndex = reads.IndexOf(sink);
+            int currentIndex = reads.IndexOf(source);
+            while (currentIndex != sinkIndex)
+            {
+                //TODO finish this block
+            }
+            // Console.WriteLine($"Source read {source}");
+            // Console.WriteLine($"Sink read {sink}");
         }
 
         public void Test()
         {
             // int overlap = this.CalculateOverlap("ATTAGACCTG", "AGACCTGCCG");
             // Console.WriteLine(overlap);
+            for (int i = 0; i < overlapMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < overlapMatrix.GetLength(1); j++){
+                    Console.WriteLine($"Overlap Calculation Row {reads[i]} Column {reads[j]} : {overlapMatrix[i,j]}");
+                }
+            }
         }
 
         public void Run()

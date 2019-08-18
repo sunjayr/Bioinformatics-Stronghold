@@ -8,6 +8,8 @@ namespace Rosalind
         {
             GenomeAssembly genome = new GenomeAssembly("./input/genome_assembly_input.fa");
             genome.BuildOverlapMatrix();
+            genome.Test();
+            genome.GenerateSuperString();
         }
     }
 }
