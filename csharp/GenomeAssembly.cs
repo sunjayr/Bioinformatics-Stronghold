@@ -11,6 +11,9 @@ using CommandLine;
     2. Calculate the maximum overlap between reads return score to an overlapMatrix
     3. Generate a path through the overlap matrix based on maximum overlaps
     4. Output the string
+    TODO: Add progress bar during overlap calculation
+        Add optimizations for overlap calculation based on prefix and suffix read lengths
+        smaller read sets the bar
 */
 namespace Rosalind
 {
