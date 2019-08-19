@@ -48,6 +48,5 @@ if __name__ == "__main__":
         values.append(kmer_counts[kmer])
     values = map(str, values)
     with open('kmer_output.txt', 'w') as f:
-        for kmer in values:
-            f.write(kmer + ' ')
+        f.write(' '.join(values) + '\n')
     
