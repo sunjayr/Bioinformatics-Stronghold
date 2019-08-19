@@ -45,6 +45,18 @@ namespace Rosalind
             return fastaDict;
         }
 
+        
+        public static void OutputFile(string fileName, List<string> fileLines)
+        {
+            using (StreamWriter sw = new StreamWriter(fileName))
+            {
+                foreach (var line in fileLines)
+                {
+                    sw.WriteLine(line);
+                }
+            }
+        }
+        
         public static List<string> GenerateKmers(int k, string read)
         {
             //TODO: Implement function to create Kmers

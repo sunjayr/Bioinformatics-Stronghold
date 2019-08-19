@@ -3,45 +3,43 @@ using System.IO;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using CommandLine;
 
-namespace Rosalind
-{
-    /*
-    Uses an unconventional algorithm to generate a shortest common superstring
+/*
+    Uses a dyanamic programming approach to generate a shortest common superstring
     1. Use the reads to generate a 2D matrix for prefix reads and suffix reads
     2. Calculate the maximum overlap between reads return score to an overlapMatrix
     3. Generate a path through the overlap matrix based on maximum overlaps
     4. Output the string
-     */
+*/
+namespace Rosalind
+{
     class GenomeAssembly
     {
         private Dictionary<string, string> readMap;
         private List<string> reads;
         private int[,] overlapMatrix;
-        private readonly int readLengthCutoff;
+        public string Genome{get; set;}
+        public string OutputLocation{get; set;}
 
 
-        public GenomeAssembly(string fastaInput) 
+
+        public GenomeAssembly(string fastaInput, string fastaOutput) 
         {
             this.readMap = Utils.ReadFastaFile(fastaInput);
             this.reads = readMap.Values.ToList();
             this.overlapMatrix = new int [this.reads.Count,this.reads.Count];
-            this.readLengthCutoff = reads[0].Length / 2;
+            this.OutputLocation = fastaOutput;
+
         }
 
-        public void PrintReads() 
-        {
-            foreach (var de in readMap)
-            {
-                Console.WriteLine($"Key: {de.Key} Value: {de.Value}");
-            }
-        }
+
         /*
-        Calculate the overlap between two strings of any length using dynamic programming.
-        Currently we iterate over the length of each string passed in using a 2D array. 
-        Note: If we assume the strings are of equal length, we can cut down the iteration
-        in half by only iterating over half of the columns
-         */ 
+            Calculate the overlap between two strings of any length using dynamic programming.
+            Currently we iterate over the length of each string passed in using a 2D array. 
+            Note: If we assume the strings are exactly equal length, we can cut down the iteration
+            in half by only iterating over half of the columns
+        */ 
         public int CalculateOverlap(string prefixRead, string suffixRead)
         {
             const int match = 1; // use 1 to get the overlapping indices between prefix and suffix
@@ -76,9 +74,8 @@ namespace Rosalind
                     {
                         string prefixRead = this.reads[prefixIndex];
                         string suffixRead = this.reads[suffixIndex];
+                        Console.WriteLine($"Calculating overlap for ({prefixIndex},{suffixIndex})");
                         int overlapScore = this.CalculateOverlap(prefixRead, suffixRead);
-                        //overlapScore = overlapScore > readLengthCutoff ? overlapScore : 0; 
-                        //Console.WriteLine($"Max overlap between {prefixRead} : {suffixRead} -> {overlapScore}");
                         this.overlapMatrix[prefixIndex,suffixIndex] = overlapScore;
                     }
 
@@ -89,6 +86,7 @@ namespace Rosalind
         
         private string FindSourceRead()
         {
+            Console.WriteLine("Locating source read.");
             int minColSum = System.Int32.MaxValue;
             int minColIndex = -1;
             for (int col = 0; col < this.overlapMatrix.GetLength(1); col++)
@@ -106,6 +104,7 @@ namespace Rosalind
 
         private string FindSinkRead()
         {
+            Console.WriteLine("Locating termination read.");
             int minRowSum = System.Int32.MaxValue;
             int minRowIndex = -1;
             for (int row = 0; row < this.overlapMatrix.GetLength(0); row++)
@@ -133,40 +132,43 @@ namespace Rosalind
             return overlapReadIndex;
 
         }
+        
         public void GenerateSuperString()
         {
             string genome = "";
             string source = this.FindSourceRead();
             string sink = this.FindSinkRead();
-            //Console.WriteLine($"Source read {source}");
-            //Console.WriteLine($"Sink read {sink}");
             genome += source;
             int sinkIndex = reads.IndexOf(sink);
             int currentIndex = reads.IndexOf(source);
+            Console.WriteLine("Constructing genome.");
             while (currentIndex != sinkIndex)
             {
                 int nextIndex = this.AddOverlap(currentIndex, ref genome);
                 currentIndex = nextIndex;    
             }
-            Console.WriteLine(genome);
-        }
+            this.Genome = genome;
 
-        public void Test()
+        }
+        
+        public void OutputGenome()
         {
-            // int overlap = this.CalculateOverlap("ATTAGACCTG", "AGACCTGCCG");
-            // Console.WriteLine(overlap);
-            for (int i = 0; i < overlapMatrix.GetLength(0); i++)
+            if (this.OutputLocation != null)
             {
-                for (int j = 0; j < overlapMatrix.GetLength(1); j++){
-                    Console.WriteLine($"Overlap Calculation Row {reads[i]} Column {reads[j]} : {overlapMatrix[i,j]}");
-                }
+                Utils.OutputFile(this.OutputLocation, new List<string>(){this.Genome});
+            }
+            else
+            {
+                Console.WriteLine(this.Genome);
             }
         }
-
+        
         public void Run()
         {
             this.BuildOverlapMatrix();
             this.GenerateSuperString();
+            this.OutputGenome();
+
         }
     }    
 }

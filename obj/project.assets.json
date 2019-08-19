@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v2.1": {
+      "CommandLineParser/2.6.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/CommandLine.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/CommandLine.dll": {}
+        }
+      },
       "Microsoft.NETCore.App/2.1.0": {
         "type": "package",
         "dependencies": {
@@ -211,6 +220,25 @@
     }
   },
   "libraries": {
+    "CommandLineParser/2.6.0": {
+      "sha512": "Cbohgo2gqNwO8+Ca672AZPTQyaaIPti5QktrqBJvzPU/KrvvFFpSNrHQN1fIOhZiwHzhtBF0YuKVBePZ4VzgkA==",
+      "type": "package",
+      "path": "commandlineparser/2.6.0",
+      "files": [
+        ".signature.p7s",
+        "README.md",
+        "commandlineparser.2.6.0.nupkg.sha512",
+        "commandlineparser.nuspec",
+        "lib/net40/CommandLine.dll",
+        "lib/net40/CommandLine.xml",
+        "lib/net45/CommandLine.dll",
+        "lib/net45/CommandLine.xml",
+        "lib/net461/CommandLine.dll",
+        "lib/net461/CommandLine.xml",
+        "lib/netstandard2.0/CommandLine.dll",
+        "lib/netstandard2.0/CommandLine.xml"
+      ]
+    },
     "Microsoft.NETCore.App/2.1.0": {
       "sha512": "AvT774nTFgU8cYcGO9j1EMwuayKslxqYTurg32HGpWa2hEYNuW2+XgYVVNcZe6Ndbr84QX6fwaOZfd5n+1m2OA==",
       "type": "package",
@@ -677,6 +705,7 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.1": [
+      "CommandLineParser >= 2.6.0",
       "Microsoft.NETCore.App >= 2.1.0"
     ]
   },
@@ -719,6 +748,10 @@
     "frameworks": {
       "netcoreapp2.1": {
         "dependencies": {
+          "CommandLineParser": {
+            "target": "Package",
+            "version": "[2.6.0, )"
+          },
           "Microsoft.NETCore.App": {
             "target": "Package",
             "version": "[2.1.0, )",
