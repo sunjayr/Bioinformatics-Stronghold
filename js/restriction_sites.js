@@ -3,7 +3,7 @@ const fs = require('fs');
 function readFasta() {
     let data = fs.readFileSync('./input/restriction_sites_input.txt');
     let sequence = data.toString().split('\n').filter(x => !x.startsWith('>'));
-    return sequence.join();
+    return sequence.join('');
     
 }
 
@@ -57,7 +57,7 @@ function outputPositions(kmerMap) {
         return x[0] >= y[0];
     });
     for (let p of sorted_list) {
-        console.log(`${p[0]}\t${p[1]}`)
+        console.log(`${p[0]} ${p[1]}`)
     }
 }
 
