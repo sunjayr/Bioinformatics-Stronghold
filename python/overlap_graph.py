@@ -1,4 +1,4 @@
-from types import *
+from types import IntType
 fasta_sequences = []
 fasta_identifiers = []
 adjacency_list = []

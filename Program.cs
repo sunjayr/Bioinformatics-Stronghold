@@ -82,6 +82,27 @@ namespace Rosalind
 
     }
 
+    [Verb("rc", HelpText="Run a program to identify corrections in reads")]
+    class ReadCorrectionOptions
+    {
+        private string _inputFile;
+        [Option('i', "inputFile", Required=true, HelpText="An input fasta file with reads")]
+        public string InputFile
+        {
+            get{ return this._inputFile; }
+            set
+            {
+                if (value.EndsWith(".fa") || value.EndsWith(".fasta"))
+                {
+                    this._inputFile = value;
+                }
+                else {
+                    throw new ArgumentException($"Fasta file expected, found {value}");
+                }
+            }
+        }
+    }
+
 
 
     class Program
@@ -89,7 +110,7 @@ namespace Rosalind
         
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<GenomeAssemblyOptions, OrfOptions, SharedSplicedMotifOptions>(args).MapResult(
+            Parser.Default.ParseArguments<GenomeAssemblyOptions, OrfOptions, SharedSplicedMotifOptions, ReadCorrectionOptions>(args).MapResult(
                 (GenomeAssemblyOptions opts) => {
                     GenomeAssembly genome = new GenomeAssembly(opts.InputFile, opts.OutputFile);
                     genome.Run();
@@ -103,6 +124,11 @@ namespace Rosalind
                 (SharedSplicedMotifOptions opts) => {
                     SharedSplicedMotif ssMotif = new SharedSplicedMotif(opts.InputFile, opts.OutputFile);
                     ssMotif.Run();
+                    return 0;
+                },
+                (ReadCorrectionOptions opts) => {
+                    ReadCorrection rc = new ReadCorrection(opts.InputFile);
+                    rc.Run();
                     return 0;
                 },
                 errs => 1
