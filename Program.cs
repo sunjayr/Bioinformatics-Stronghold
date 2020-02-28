@@ -103,6 +103,57 @@ namespace Rosalind
         }
     }
 
+    [Verb("im", HelpText="Run a program to identify the shortest common superstring of two motifs")]
+    class InterleavingMotifsOptions
+    {
+        private string _inputFile;
+        private int matchScore;
+        private int indelPenalty;
+
+        [Option('i', "inputFile", Required=true, HelpText="An input fasta file with reads")]
+        public string InputFile
+        {
+            get{ return this._inputFile; }
+            set
+            {
+                if (value.EndsWith(".txt"))
+                {
+                    this._inputFile = value;
+                }
+                else {
+                    throw new ArgumentException($"Fasta file expected, found {value}");
+                }
+            }
+        }
+
+        [Option('m', "matchScore", HelpText="An integer value for the match score")]
+        public int MatchScore
+        {
+            get {return this.matchScore;}
+            set
+            {
+                if (value < 1) 
+                {
+                    throw new ArgumentException($"Match score must be a value greater than 0");
+                }
+                this.matchScore = value;
+            }
+        }
+
+        [Option('x', "indelPenalty", HelpText="An integer value for the indel penalty")]
+        public int IndelPenalty
+        {
+            get {return this.indelPenalty;}
+            set
+            {
+                if (value > 0 )
+                {
+                    throw new ArgumentException($"Indel penalty must be less than 1");
+                }
+                this.indelPenalty = value;
+            }
+        }
+    }
 
 
     class Program
@@ -110,7 +161,7 @@ namespace Rosalind
         
         static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<GenomeAssemblyOptions, OrfOptions, SharedSplicedMotifOptions, ReadCorrectionOptions>(args).MapResult(
+            Parser.Default.ParseArguments<GenomeAssemblyOptions, OrfOptions, SharedSplicedMotifOptions, ReadCorrectionOptions, InterleavingMotifsOptions>(args).MapResult(
                 (GenomeAssemblyOptions opts) => {
                     GenomeAssembly genome = new GenomeAssembly(opts.InputFile, opts.OutputFile);
                     genome.Run();
@@ -130,6 +181,11 @@ namespace Rosalind
                     ReadCorrection rc = new ReadCorrection(opts.InputFile);
                     rc.Run();
                     return 0;
+                },
+                (InterleavingMotifsOptions opts) => {
+                    InterleavingMotifs im = new InterleavingMotifs(opts.InputFile, opts.MatchScore, opts.IndelPenalty);
+                    im.Run();
+                    return 0; 
                 },
                 errs => 1
             );

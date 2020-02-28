@@ -46,6 +46,18 @@ namespace Rosalind
         }
 
         
+        public static List<string> ReadFile(string fileName) {
+            List<string> lines = new List<string>();
+            using (StreamReader sr = new StreamReader(fileName))
+            {
+                string line;
+                while((line = sr.ReadLine()) != null) {
+                    lines.Add(line);
+                }
+            }
+            return lines;
+        }
+        
         public static void OutputFile(string fileName, List<string> fileLines)
         {
             using (StreamWriter sw = new StreamWriter(fileName))
@@ -74,6 +86,18 @@ namespace Rosalind
         {
             return Enumerable.Range(0,array.GetLength(0))
                             .Select(x => array[x,col]).ToArray();
+        }
+
+        public static void PrintArray(int[,] matrix)
+        {
+            for (int i = 0; i < matrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                {
+                    Console.Write(matrix[i,j] + " ");
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
