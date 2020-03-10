@@ -154,4 +154,25 @@ namespace Rosalind
             }
         }
     }
+
+    [Verb("edist", HelpText="Solve the edit distance problem")]
+    class EditDistanceOptions
+    {
+        private string _inputFile;
+        [Option('i', "inputFile", Required=true, HelpText="An input fasta file containing 2 strings")]
+        public string InputFile
+        {
+            get{ return this._inputFile; }
+            set
+            {
+                if (value.EndsWith(".fa") || value.EndsWith(".fasta"))
+                {
+                    this._inputFile = value;
+                }
+                else {
+                    throw new ArgumentException($"Fasta file expected, found {value}");
+                }
+            }
+        }
+    }
 }
