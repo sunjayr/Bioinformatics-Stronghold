@@ -10,4 +10,4 @@ def transcribe(string):
             rna.append(letter)
     return ''.join(rna)
 
-print transcribe2("GATGGAACTTGACTACGTAAATT")
+print transcribe2("CGATCGGTTAGGTAAGTCTGAT")
