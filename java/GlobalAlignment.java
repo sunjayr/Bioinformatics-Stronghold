@@ -21,8 +21,32 @@ public class GlobalAlignment {
         String line;
         ArrayList<String[]> inputLines = new ArrayList<String[]>();
         
-        String firstString = "PLEASANTLY";
-        String secondString = "MEANLY";
+        String firstString = "AAQFKMEIVWVSTKIVLSGLAFEKFHCWFADIWVRCKFSCVSDVMQVYKIWLQKSCRTMT" +
+        "TWKRCVAIGQKEGKDYYCYMNPPFGHTTQAGGMWGCEQYMGVKIQWIQTYASVGIFQPSA" +
+        "MFRISRERVFWMVDQIVPRDDNVLDKDKRDAKKWSAIMKMSSTQHVDPVRIKTYEFFVKR" +
+        "KEMICPCQNAYEDFTNPHLPGKGTQPKPCKALNVVGKKNVCYKEHSCNCCAWLGWGFCEQ" +
+        "NWHKPDNKSVNGLRYTFEQSWRTWHSLCQWDHRAWMMYFVKYHVHQKPQPNWECQMQFCW" +
+        "ELIDHVRNWIPQTCPMGLNMKWPMMRMQKCSITKYNSRRQEGMWPHTRVLWETFFINYHS" +
+        "REIVSQGSFNCKEDGVSQHGMTGGLVGCCFLHHPFDNIEEQSWDRSLPVKWTWMQDSVHG" +
+        "GQVFRIATENLECQCIFHAAYVGDVKGYNMDWYESINDFGKRDTIHAVVNTWDNMANNQM" +
+        "RNWFDMPCICPVEYDCAYIRQNIHVCMAPEYFCRVGQVAAYRSWKREWASGLDQYHAYVM" +
+        "PKLWNMEDCQEMPQWAPIVYCGKALFDELFSVEGCKIGFRIGTWDMIIAGIQLYHKMIVD" +
+        "TLMPHGACRGGHLEMVVGPIWPPSMYMTIAWNLRHCMNNHWASQSEAMATFGDDLGSMQL" +
+        "GLWHFTQRVIKPIKCRVMDARVAGSDECISEWIPVDCSFHLPWTWQRFRPTVESKTWHYF" +
+        "RNTHWMDECDSHLKNQWYKYWHKGSEVFKYHANGAHLW";
+        String secondString = "AAQTKIVLWGLKIYYWVADIWVRCKFSVQVDKIWLQKSYSVAYTNLSADICAIGQKEGKD" +
+        "YTWYCYMNPPFKHTTQFEGMWGCWQYMGVKITPVPMVWIQTYASQPSAHFRISRERVFGM" +
+        "SDQIVPRWDNVLDKDKRDAQKWSAMKMSSTQQPDFFVKRKSYLKHGDKSICPFQNAYEDF" +
+        "INNMLHGKHTDACTPHRLCMGDPLQETFAQKPCKALNVVGKKNVCYKPYGVCHPPGWGFC" +
+        "EQMWHKADNKSVNWGNWDTTFLRYTFLPCDDWDHRAWIMYFVKYHVHECQMQFYEAFNGW" +
+        "EWELIDPQTCPQRFMFWEKMWYKTWMTVVRMDTKTNGRRQEGTHPHTRVLHKTGTFGVRE" +
+        "IKEDGTCQHGMTGGLVGCCFLHHPFFNTEEQSWDRSLQDSVHGGQVMRMASENLECQCIF" +
+        "HAAYVGDVKIFFIGYNMDWYESPNDFGKRDHAQYNLSRNYMENAYSLQDDMPWICPNEYD" +
+        "CAYQYTTELQLPRQNIHVCMVNFTMPRPEYFALMRLPLRFAGEGNRSWMPAVLEREWASG" +
+        "LDQYHNNTLIMTYVMNMEDCQEMPQWAPIVYCGKALFYHKPDNPQELEIPWPFSVEGCKQ" +
+        "GFRIGLYKPSITAYRHKMIVDTLMPHGACRGGHLEMTGHYRVGGLVIWKPLMYMTIPWNL" +
+        "RHCMNNFWASQSELQMYTFGCCRTCLWHWFTQRNKPINCRVMDARVAKAHSDECISEVDC" +
+        "SFMLESRVHAWTWQRFRPGTARQLRWMDEYGSHLKNQWQHKMMIDSWCIWCQPHIW";
         
         while( (line = bReader.readLine()) != null){
             inputLines.add(line.split(" "));
@@ -39,7 +63,7 @@ public class GlobalAlignment {
         }
         
         output = GlobalAligner(firstString, secondString, scoringMatrix);
-        OutputLCS(output, firstString.length(), secondString.length(), firstString, secondString);
+        //OutputLCS(output, firstString.length(), secondString.length(), firstString, secondString);
         //System.out.println(scoringMatrix[0][0]);
         
     }
@@ -58,10 +82,10 @@ public class GlobalAlignment {
         int[][] s = new int[string1.length() + 1][string2.length() + 1];
         
         for( int i = 0; i <= string1.length(); i++ ){
-            s[i][0] = 0;
+            s[i][0] = i * -indelPenalty;
         }
         for( int j = 0; j <= string2.length(); j++){
-            s[0][j] = 0;
+            s[0][j] = j * -indelPenalty;
         }
         
         for( int i = 1; i <= string1.length(); i++ ){
@@ -84,7 +108,7 @@ public class GlobalAlignment {
         }
         
         System.out.println(s[string1.length()][string2.length()]);
-        System.out.println(string1);
+        //System.out.println(string1);
         return Backtrack;
     }
     
